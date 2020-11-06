@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
         fclose(fin);
     }
     else
-        printf("Nierozpoznany argument %s, oczekiwałem:\nsum\nsubtract\nprod\nmultiply\nornm\n", argv[1]);
+        printf("Nierozpoznany argument %s, oczekiwałem:\nsum\nsubtract\nprod\nmultiply\nnorm\n", argv[1]);
     
     return 0;
 }
