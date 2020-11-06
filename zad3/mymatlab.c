@@ -55,8 +55,8 @@ void zapisz(struct macierz m)
 {
     FILE *fin;
     fin=fopen("do_b.txt", "w+");
-    fprintf(fin, "%.1d\n", m.r);
-    fprintf(fin, "%.1d\n", m.c);
+    fprintf(fin, "%d\n", m.r);
+    fprintf(fin, "%d\n", m.c);
 
     for(int i = 0; i<m.r; i++)
         {    
@@ -67,6 +67,15 @@ void zapisz(struct macierz m)
             fprintf(fin, "\n");
         }
     printf("Macierz zapisana do pliku do_b.txt\n");
+}
+
+void zapisz1(float m)
+{
+    FILE *fin;
+    fin=fopen("do_b.txt", "w+");
+    fprintf(fin, "%.2f\n", m);
+
+    printf("Norma zapisana do pliku do_b.txt\n");
 }
 
 float norm(struct macierz m)
@@ -176,38 +185,39 @@ int main(int argc, char *argv[])
     FILE *fin1;
 
     if(strcmp(argv[1], "norm") == 0)
-    {
+    {   
         fin = fopen(argv[2], "r");
         wczytaj(fin, &mac); 
-        printf("Norma macierzy %s = %f\n", argv[2], norm(mac));
+        
+        if(argc == 4)
+        {
+            zapisz1(norm(mac));
+        }
+        else
+        {
+            printf("Norma macierzy %s = %f\n", argv[2], norm(mac));
+        }
         fclose(fin);
     }
     else if(strcmp(argv[1], "sum") == 0)
     {
+        fin = fopen(argv[2], "r");
+        fin1 = fopen(argv[3], "r");
+        wczytaj(fin, &mac);
+        wczytaj1(fin1, &mac1);
+        struct macierz sum = suma(mac, mac1);
+        
         if(argc == 5)
         {
-            fin = fopen(argv[2], "r");
-            fin1 = fopen(argv[3], "r");
-            wczytaj(fin, &mac);
-            wczytaj1(fin1, &mac1);
-            struct macierz sum = suma(mac, mac1);
             zapisz(sum);
-            fclose(fin);
-            fclose(fin1);
         }
         else
         {
-            fin = fopen(argv[2], "r");
-            fin1 = fopen(argv[3], "r");
-            wczytaj(fin, &mac);
-            wczytaj1(fin1, &mac1);
-            struct macierz sum = suma(mac, mac1);
             printf("Suma macierzy %s i %s = \n", argv[2], argv[3]);
             wypisz(sum);
-            fclose(fin);
-            fclose(fin1);
         }
-        return 0;
+        fclose(fin);
+        fclose(fin1);
     }
     else if(strcmp(argv[1], "subtract") == 0)
     {
@@ -216,8 +226,16 @@ int main(int argc, char *argv[])
         wczytaj(fin, &mac);
         wczytaj1(fin1, &mac1);
         struct macierz sub = subtract(mac, mac1);
-        printf("Różnica macierzy %s i %s = \n", argv[2], argv[3]);
-        wypisz(sub);
+
+        if(argc == 5)
+        {
+            zapisz(sub);
+        }
+        else
+        {
+            printf("Różnica macierzy %s i %s = \n", argv[2], argv[3]);
+            wypisz(sub);
+        }
         fclose(fin);
         fclose(fin1);
     }
@@ -228,8 +246,15 @@ int main(int argc, char *argv[])
         wczytaj(fin, &mac);
         wczytaj1(fin1, &mac1);
         struct macierz prod = product(mac, mac1);
-        printf("Macierz %s * macierz %s = \n", argv[2], argv[3]);
-        wypisz(prod);
+        if(argc == 5)
+        {
+            zapisz(prod);
+        }
+        else
+        {
+            printf("Macierz %s * macierz %s = \n", argv[2], argv[3]);
+            wypisz(prod);
+        }
         fclose(fin);
         fclose(fin1);
     }
@@ -239,8 +264,15 @@ int main(int argc, char *argv[])
         fin = fopen(argv[2], "r");
         wczytaj(fin, &mac);
         struct macierz skal = skalar(mac, x);
-        printf("Macierz %s * %.2f =\n", argv[2], x);
-        wypisz(skal);
+        if(argc == 5)
+        {
+            zapisz(skal);
+        }
+        else
+        {
+            printf("Macierz %s * %.2f =\n", argv[2], x);
+            wypisz(skal);
+        }
         fclose(fin);
     }
     else
